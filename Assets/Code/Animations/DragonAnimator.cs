@@ -34,19 +34,19 @@ public class DragonAnimator : MonoBehaviour
 
     public void PlayWalkAnimation() 
     {
-        GetComponent<Animator>().SetBool("IsWalk", true);
+        animator.SetBool("IsWalk", true);
     }
 
     public void StopWalkingAndRunningAnimations() 
     {
-        GetComponent<Animator>().SetBool("IsWalk", false);
-        GetComponent<Animator>().SetBool("IsRun", false);
+        animator.SetBool("IsWalk", false);
+        animator.SetBool("IsRun", false);
     }
 
     public void PlayRunAnimation() 
     {
-        GetComponent<Animator>().SetBool("IsWalk", true);
-        GetComponent<Animator>().SetBool("IsRun", true);
+        animator.SetBool("IsWalk", true);
+        animator.SetBool("IsRun", true);
     }
 
     public string GetCurrentAnimationName()
