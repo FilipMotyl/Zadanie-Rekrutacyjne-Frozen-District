@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class DragonAI : MonoBehaviour {
 
@@ -11,8 +10,6 @@ public class DragonAI : MonoBehaviour {
 		 Dead
 	}
 
-	private const string WALK_ANIMATION_NAME = "WalkAnimation";
-    
 	[SerializeField] private int maxHitPoints = 30;
     [SerializeField] private float rotationSpeed = 4f;
     [SerializeField] private float moveSpeed = 2f;
@@ -47,7 +44,15 @@ public class DragonAI : MonoBehaviour {
 		switch (state) 
 		{
 			case State.Chasing:
-				Chase();
+                Vector3 playerDirection = (gameManager.GetPlayerContainer().transform.position - transform.position);
+                Quaternion targetRotation = Quaternion.LookRotation(playerDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                dragonAnimator.PlayWalkAnimation();
+                transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+                if (Vector3.Distance(transform.position, gameManager.GetPlayerContainer().transform.position) < 10)
+                {
+                    state = State.Attacking;
+                }
                 break;
 			case State.Attacking:
                 dragonAnimator.PlayAttackAnimation();
@@ -64,24 +69,6 @@ public class DragonAI : MonoBehaviour {
 				throw new ArgumentOutOfRangeException();
 		}
 	}
-
-	private void Chase()
-	{
-        Vector3 playerDirection = (gameManager.GetPlayerContainer().transform.position - transform.position);
-        Quaternion targetRotation = Quaternion.LookRotation(playerDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        dragonAnimator.PlayWalkAnimation();
-        transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
-        if (Vector3.Distance(transform.position, gameManager.GetPlayerContainer().transform.position) < 10)
-        {
-            state = State.Attacking;
-        }
-    }
-	private void Attack()
-	{
-        dragonAnimator.PlayAttackAnimation();
-		gameManager.StartEndGameSequence();
-    }
 
 	private void Die()
 	{
