@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DragonAI : MonoBehaviour {
 
-	enum State {
+	enum State
+	{
 		 Chasing,
 		 Attacking,
 		 Dead
@@ -15,7 +16,6 @@ public class DragonAI : MonoBehaviour {
     [SerializeField] private float moveSpeed = 2f;
 	[SerializeField] private float timeToReturnToPool = 30f;
 
-    [SerializeField] private List<Renderer> renderers = new List<Renderer>();
     [SerializeField] private DragonAnimator dragonAnimator;
 	[SerializeField] private ObjectPoolSO dragonObjectPool;
     [SerializeField] private GameManager gameManager = null;
